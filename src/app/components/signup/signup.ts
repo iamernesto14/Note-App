@@ -2,6 +2,7 @@
 import { Component } from '@angular/core';
    import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
    import { Router, RouterLink } from '@angular/router';
+   import { ToasterService } from '../../services/toaster';
 
    @Component({
      selector: 'app-signup',
@@ -13,8 +14,11 @@ import { Component } from '@angular/core';
    export class SignUp {
      signUpForm: FormGroup;
      signUpError: string | null = null;
-
-     constructor(private fb: FormBuilder, private router: Router) {
+     constructor(
+       private fb: FormBuilder,
+       private router: Router,
+       private toasterService: ToasterService
+     ) {
        this.signUpForm = this.fb.group(
          {
            email: ['', [Validators.required, Validators.email]],
@@ -38,6 +42,7 @@ import { Component } from '@angular/core';
          this.signUpError = null;
          console.log('Sign-up successful:', { email });
          this.router.navigate(['/notes']);
+         this.toasterService.showToast('Sign-up successful!', 'success');
        } else {
          this.signUpError = 'Please fill out all fields correctly';
        }

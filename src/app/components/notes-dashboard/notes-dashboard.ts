@@ -5,6 +5,7 @@
    import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { ToasterService } from '../../services/toaster';
 
    @Component({
      selector: 'app-notes-dashboard',
@@ -17,8 +18,11 @@ import { FormsModule } from '@angular/forms';
      notes: Note[] = [];
      filteredNotes: Note[] = [];
      searchTerm: string = '';
-
-     constructor(private noteService: NoteService, private router: Router) {}
+     constructor(
+       private noteService: NoteService,
+       private router: Router,
+       private toasterService: ToasterService
+     ) {}
 
      ngOnInit() {
        this.notes = this.noteService.getAll();
@@ -47,12 +51,14 @@ import { FormsModule } from '@angular/forms';
        this.noteService.archive(id);
        this.notes = this.noteService.getAll();
        this.filteredNotes = [...this.notes];
+       this.toasterService.showToast('Note archived successfully!', 'success');
      }
 
      deleteNote(id: string) {
        this.noteService.delete(id);
        this.notes = this.noteService.getAll();
        this.filteredNotes = [...this.notes];
+       this.toasterService.showToast('Note deleted successfully!', 'success');
      }
 
      navigateToSettings() {

@@ -3,6 +3,7 @@
 import { Component } from '@angular/core';
    import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
    import { Router, RouterLink } from '@angular/router';
+   import { ToasterService } from '../../services/toaster';
 
    @Component({
      selector: 'app-login',
@@ -14,8 +15,11 @@ import { Component } from '@angular/core';
    export class Login {
      loginForm: FormGroup;
      loginError: string | null = null;
-
-     constructor(private fb: FormBuilder, private router: Router) {
+     constructor(
+       private fb: FormBuilder,
+       private router: Router,
+       private toasterService: ToasterService
+     ) {
        this.loginForm = this.fb.group({
          email: ['', [Validators.required, Validators.email]],
          password: ['', Validators.required]
@@ -30,6 +34,7 @@ import { Component } from '@angular/core';
            this.loginError = null;
            console.log('Login successful:', { email });
            this.router.navigate(['/notes']);
+           this.toasterService.showToast('Successfully logged in!', 'success');
          } else {
            this.loginError = 'Invalid email or password';
          }

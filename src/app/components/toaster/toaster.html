@@ -1,0 +1,5 @@
+
+   <div *ngIf="toast" class="toast" [ngClass]="{'success': toast.type === 'success', 'info': toast.type === 'info', 'error': toast.type === 'error'}" role="alert" tabindex="0">
+     <span>{{ toast.message }}</span>
+     <button class="close-btn" (click)="closeToast()" tabindex="0" aria-label="Close notification">×</button>
+   </div>

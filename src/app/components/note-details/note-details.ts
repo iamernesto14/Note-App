@@ -3,6 +3,7 @@
    import { NoteService } from '../../services/note';
    import { Note } from '../../models/note.interface';
    import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+   import { ToasterService } from '../../services/toaster';
 import { CommonModule } from '@angular/common';
 
    @Component({
@@ -14,11 +15,11 @@ import { CommonModule } from '@angular/common';
    })
    export class NoteDetails implements OnInit {
      note: Note | undefined;
-
      constructor(
        private noteService: NoteService,
        private route: ActivatedRoute,
-       private router: Router
+       private router: Router,
+       private toasterService: ToasterService
      ) {}
 
      ngOnInit() {
@@ -32,6 +33,7 @@ import { CommonModule } from '@angular/common';
        if (this.note?.id) {
          this.noteService.archive(this.note.id);
          this.router.navigate(['/notes']);
+         this.toasterService.showToast('Note archived successfully!', 'success');
        }
      }
 
@@ -39,6 +41,7 @@ import { CommonModule } from '@angular/common';
        if (this.note?.id) {
          this.noteService.delete(this.note.id);
          this.router.navigate(['/notes']);
+         this.toasterService.showToast('Note deleted successfully!', 'success');
        }
      }
 

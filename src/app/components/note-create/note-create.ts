@@ -3,6 +3,7 @@
    import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
    import { NoteService } from '../../services/note';
    import { Router, RouterLink } from '@angular/router';
+   import { ToasterService } from '../../services/toaster';
 import { CommonModule } from '@angular/common';
 
    @Component({
@@ -15,8 +16,12 @@ import { CommonModule } from '@angular/common';
    export class NoteCreate {
      noteForm: FormGroup;
      formError: string | null = null;
-
-     constructor(private fb: FormBuilder, private noteService: NoteService, private router: Router) {
+     constructor(
+       private fb: FormBuilder,
+       private noteService: NoteService,
+       private router: Router,
+       private toasterService: ToasterService
+     ) {
        this.noteForm = this.fb.group({
          title: ['', Validators.required],
          content: ['', Validators.required],
@@ -34,6 +39,7 @@ import { CommonModule } from '@angular/common';
          this.formError = null;
          console.log('Note created:', newNote);
          this.router.navigate(['/notes']);
+         this.toasterService.showToast('Note created successfully!', 'success');
        } else {
          this.formError = 'Please fill out all required fields';
        }
