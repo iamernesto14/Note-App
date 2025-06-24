@@ -69,4 +69,13 @@ import { Injectable } from '@angular/core';
        }
        return undefined;
      }
+
+     unarchive(id: string): Note | undefined {
+       const note = this.getById(id);
+       if (note && note.isArchived && !note.isDeleted) {
+         note.isArchived = false;
+         return note;
+       }
+       return undefined;
+     }
    }
