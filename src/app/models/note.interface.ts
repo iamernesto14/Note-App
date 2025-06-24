@@ -4,5 +4,6 @@ export interface Note {
     content: string;
     tags: string[];
     isArchived: boolean;
+    isDeleted: boolean;
     createdAt: Date;
 }

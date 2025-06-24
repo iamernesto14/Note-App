@@ -8,25 +8,31 @@ import { Injectable } from '@angular/core';
      private notes: Note[] = [];
 
      // Create a new note
-     create(note: Omit<Note, 'id' | 'createdAt' | 'isArchived'>): Note {
+     create(note: Omit<Note, 'id' | 'createdAt' | 'isArchived' | 'isDeleted'>): Note {
        const newNote: Note = {
          ...note,
          id: crypto.randomUUID(),
          createdAt: new Date(),
-         isArchived: false
+         isArchived: false,
+         isDeleted: false
        };
        this.notes.push(newNote);
        return newNote;
      }
 
-     // Read all non-archived notes
+     // Read all non-archived, non-deleted notes
      getAll(): Note[] {
-       return this.notes.filter(note => !note.isArchived);
+       return this.notes.filter(note => !note.isArchived && !note.isDeleted);
      }
 
      // Read archived notes
      getArchived(): Note[] {
-       return this.notes.filter(note => note.isArchived);
+       return this.notes.filter(note => note.isArchived && !note.isDeleted);
+     }
+
+     // Read deleted notes
+     getDeleted(): Note[] {
+       return this.notes.filter(note => note.isDeleted);
      }
 
      // Read a single note by ID
@@ -44,11 +50,11 @@ import { Injectable } from '@angular/core';
        return undefined;
      }
 
-     // Delete a note by ID
+     // Mark a note as deleted by ID
      delete(id: string): boolean {
-       const index = this.notes.findIndex(note => note.id === id);
-       if (index !== -1) {
-         this.notes.splice(index, 1);
+       const note = this.notes.find(note => note.id === id);
+       if (note) {
+         note.isDeleted = true;
          return true;
        }
        return false;
@@ -57,7 +63,7 @@ import { Injectable } from '@angular/core';
      // Toggle archive status of a note
      archive(id: string): Note | undefined {
        const note = this.notes.find(note => note.id === id);
-       if (note) {
+       if (note && !note.isDeleted) {
          note.isArchived = !note.isArchived;
          return note;
        }
