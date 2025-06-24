@@ -2,13 +2,13 @@
    import { Component, OnInit } from '@angular/core';
    import { NoteService } from '../../services/note';
    import { Note } from '../../models/note.interface';
-   import { Router } from '@angular/router';
+   import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
    @Component({
      selector: 'app-notes-dashboard',
      standalone: true,
-     imports: [CommonModule],
+     imports: [CommonModule, RouterLink],
      templateUrl: './notes-dashboard.html',
      styleUrls: ['./notes-dashboard.scss']
    })
