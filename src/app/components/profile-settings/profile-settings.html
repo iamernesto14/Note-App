@@ -1,0 +1,26 @@
+
+   <section class="settings-container">
+     <div class="header">
+       <h1>Settings</h1>
+       <a routerLink="/notes" (click)="onBack()" class="btn btn-secondary" tabindex="0">Back to Dashboard</a>
+     </div>
+     <form [formGroup]="settingsForm" (ngSubmit)="saveSettings()" class="settings-form">
+       <div class="form-group">
+         <label for="username">Username:</label>
+         <p id="username">{{ username }}</p>
+       </div>
+       <div class="form-group">
+         <label for="theme">Theme:</label>
+         <select id="theme" formControlName="theme" aria-label="Select theme">
+           <option value="light">Light</option>
+           <option value="dark">Dark</option>
+         </select>
+       </div>
+       <div class="form-group">
+         <label for="notifications">Notifications:</label>
+         <input type="checkbox" id="notifications" formControlName="notifications" aria-label="Toggle notifications" />
+       </div>
+       <button type="submit" class="btn" [disabled]="settingsForm.invalid" tabindex="0">Save Settings</button>
+     </form>
+   </section>
+   

@@ -54,4 +54,8 @@ import { FormsModule } from '@angular/forms';
        this.notes = this.noteService.getAll();
        this.filteredNotes = [...this.notes];
      }
+
+     navigateToSettings() {
+       this.router.navigate(['/settings']);
+     }
    }
