@@ -1,1 +1,60 @@
-<p>login works!</p>
+
+   <section class="login-container">
+     <h1>Log In</h1>
+     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+       <div class="form-group">
+         <label for="email">Email</label>
+         <input
+           id="email"
+           type="email"
+           formControlName="email"
+           placeholder="Enter your email"
+           aria-required="true"
+           [attr.aria-invalid]="loginForm.get('email')?.invalid && loginForm.get('email')?.touched"
+         />
+         <div
+           *ngIf="loginForm.get('email')?.hasError('required') && loginForm.get('email')?.touched"
+           class="error"
+           role="alert"
+         >
+           Email is required
+         </div>
+         <div
+           *ngIf="loginForm.get('email')?.hasError('email') && loginForm.get('email')?.touched"
+           class="error"
+           role="alert"
+         >
+           Please enter a valid email
+         </div>
+       </div>
+
+       <div class="form-group">
+         <label for="password">Password</label>
+         <input
+           id="password"
+           type="password"
+           formControlName="password"
+           placeholder="Enter your password"
+           aria-required="true"
+           [attr.aria-invalid]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
+         />
+         <div
+           *ngIf="loginForm.get('password')?.hasError('required') && loginForm.get('password')?.touched"
+           class="error"
+           role="alert"
+         >
+           Password is required
+         </div>
+       </div>
+
+       <div *ngIf="loginError" class="error" role="alert">
+         {{ loginError }}
+       </div>
+
+       <button type="submit" [disabled]="loginForm.invalid" class="btn">Log In</button>
+     </form>
+
+     <p>
+       Don't have an account? <a routerLink="/signup" tabindex="0">Sign Up</a>
+     </p>
+   </section>
