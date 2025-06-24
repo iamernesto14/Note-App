@@ -1,1 +1,22 @@
-<p>notes-dashboard works!</p>
+
+   <section class="dashboard-container">
+     <div class="header">
+       <h1>Notes Dashboard</h1>
+       <a routerLink="/create" class="btn">Create New Note</a>
+     </div>
+     <div class="notes-grid" role="list">
+       <div *ngFor="let note of notes" class="note-card" role="listitem">
+         <h2>{{ note.title }}</h2>
+         <p>{{ note.content | slice:0:100 }}...</p>
+         <div class="actions">
+           <a (click)="viewNote(note.id)" class="btn" tabindex="0">View</a>
+           <button (click)="archiveNote(note.id)" class="btn" tabindex="0">Archive</button>
+           <button (click)="deleteNote(note.id)" class="btn btn-danger" tabindex="0">Delete</button>
+         </div>
+       </div>
+       <div *ngIf="notes.length === 0" class="no-notes" role="alert">
+         No notes available. Create one to get started!
+       </div>
+     </div>
+   </section>
+   
