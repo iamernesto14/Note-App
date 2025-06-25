@@ -6,11 +6,12 @@
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ToasterService } from '../../services/toaster';
+import { Sidebar } from '../shared/sidebar/sidebar';
 
    @Component({
      selector: 'app-notes-dashboard',
      standalone: true,
-     imports: [CommonModule, RouterLink, FormsModule],
+     imports: [CommonModule, RouterLink, FormsModule, Sidebar],
      templateUrl: './notes-dashboard.html',
      styleUrls: ['./notes-dashboard.scss']
    })
@@ -64,4 +65,11 @@ import { ToasterService } from '../../services/toaster';
      navigateToSettings() {
        this.router.navigate(['/settings']);
      }
+
+     filterByTag(tag: string) {
+  this.filteredNotes = this.notes.filter(note =>
+    note.tags.map(t => t.toLowerCase()).includes(tag.toLowerCase())
+  );
+}
+
    }

@@ -1,4 +1,9 @@
-   <section class="dashboard-container">
+
+
+<section class="dashboard-layout">
+  <app-sidebar (tagSelected)="filterByTag($event)"></app-sidebar>
+
+     <div class="dashboard-container">
      <div class="header">
        <h1>Notes Dashboard</h1>
        <a routerLink="/create" class="btn" tabindex="0">Create Note</a>
@@ -31,4 +36,5 @@
          No notes available{{ searchTerm ? ' matching "' + searchTerm + '"' : '' }}.
        </div>
      </div>
-   </section>
+    </div>
+</section>

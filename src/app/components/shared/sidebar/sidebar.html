@@ -1,0 +1,17 @@
+<aside class="sidebar">
+  <h2 class="logo">📝 Notes</h2>
+
+  <nav class="nav-links">
+    <a routerLink="/notes" routerLinkActive="active">All Notes</a>
+    <a routerLink="/archived" routerLinkActive="active">Archived Notes</a>
+  </nav>
+
+  <div class="tags-section">
+    <h3>Tags</h3>
+    <ul class="tags-list">
+      <li *ngFor="let tag of tags">
+        <button (click)="onTagClick(tag)" tabindex="0">{{ tag }}</button>
+      </li>
+    </ul>
+  </div>
+</aside>
