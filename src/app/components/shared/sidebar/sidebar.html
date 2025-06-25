@@ -4,8 +4,8 @@
   </div>
 
   <nav class="nav-links">
-    <a routerLink="/notes" routerLinkActive="active"><img src="assets/images/icon-home.svg" alt="home icon"> All Notes</a>
-    <a routerLink="/archived" routerLinkActive="active"><img src="assets/images/icon-archive.svg" alt="archive icon"> Archived Notes</a>
+    <a (click)="onAllNotesClick()" [class.active]="activeView === 'all'">All Notes</a>
+    <a (click)="onArchivedNotesClick()" [class.active]="activeView === 'archived'">Archived Notes</a>
   </nav>
 
   <div class="tags-section">

@@ -23,6 +23,7 @@ export class NotesDashboard implements OnInit {
   searchTerm: string = '';
   selectedNote: Note | null = null;
   showForm: boolean = false;
+  currentView: 'all' | 'archived' | null = 'all';
 
   constructor(
     private noteService: NoteService,
@@ -31,8 +32,7 @@ export class NotesDashboard implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.notes = this.noteService.getAll();
-    this.filteredNotes = [...this.notes];
+    this.showAllNotes();
   }
 
   onSearch(searchTerm: string) {
@@ -41,6 +41,24 @@ export class NotesDashboard implements OnInit {
       note.title.toLowerCase().includes(searchTerm) ||
       note.tags.some(tag => tag.toLowerCase().includes(searchTerm))
     );
+  }
+
+  showAllNotes() {
+    this.currentView = 'all';
+    this.notes = this.noteService.getAll();
+    this.filteredNotes = [...this.notes];
+    this.searchTerm = '';
+    this.selectedNote = null;
+    this.showForm = false;
+  }
+
+  showArchivedNotes() {
+    this.currentView = 'archived';
+    this.notes = this.noteService.getArchived();
+    this.filteredNotes = [...this.notes];
+    this.searchTerm = '';
+    this.selectedNote = null;
+    this.showForm = false;
   }
 
   clearSearch() {
@@ -57,9 +75,14 @@ export class NotesDashboard implements OnInit {
   }
 
   filterByTag(tag: string) {
+    this.currentView = null; // Clear view when filtering by tag
+    this.notes = this.noteService.getAll(); // Start from all notes
     this.filteredNotes = this.notes.filter(note =>
       note.tags.map(t => t.toLowerCase()).includes(tag.toLowerCase())
     );
+    this.searchTerm = '';
+    this.selectedNote = null;
+    this.showForm = false;
   }
 
   selectNote(note: Note) {
@@ -74,9 +97,11 @@ export class NotesDashboard implements OnInit {
 
   onSaveNote(note: { title: string; content: string; tags: string[] }) {
     this.noteService.create(note);
-    this.notes = this.noteService.getAll();
-    this.filteredNotes = [...this.notes];
-    this.showForm = false;
+    if (this.currentView === 'all') {
+      this.showAllNotes();
+    } else if (this.currentView === 'archived') {
+      this.showArchivedNotes();
+    }
   }
 
   cancelCreateForm() {
@@ -86,8 +111,11 @@ export class NotesDashboard implements OnInit {
   archiveNote(id: string | undefined) {
     if (id) {
       this.noteService.archive(id);
-      this.notes = this.noteService.getAll();
-      this.filteredNotes = [...this.notes];
+      if (this.currentView === 'all') {
+        this.showAllNotes();
+      } else if (this.currentView === 'archived') {
+        this.showArchivedNotes();
+      }
       this.toasterService.showToast('Note archived successfully!', 'success');
       if (this.selectedNote?.id === id) {
         this.selectedNote = null;
@@ -98,8 +126,11 @@ export class NotesDashboard implements OnInit {
   deleteNote(id: string | undefined) {
     if (id) {
       this.noteService.delete(id);
-      this.notes = this.noteService.getAll();
-      this.filteredNotes = [...this.notes];
+      if (this.currentView === 'all') {
+        this.showAllNotes();
+      } else if (this.currentView === 'archived') {
+        this.showArchivedNotes();
+      }
       this.toasterService.showToast('Note deleted successfully!', 'success');
       if (this.selectedNote?.id === id) {
         this.selectedNote = null;

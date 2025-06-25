@@ -1,5 +1,8 @@
 <div class="dashboard-layout">
-  <app-sidebar></app-sidebar>
+  <app-sidebar (tagSelected)="filterByTag($event)"
+    (allNotesSelected)="showAllNotes()"
+    (archivedNotesSelected)="showArchivedNotes()">
+  </app-sidebar>
   <div class="dashboard-main">
     <app-header
       [searchTerm]="searchTerm"
