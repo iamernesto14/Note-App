@@ -1,105 +1,150 @@
+// Variables (you can move this to a separate _variables.scss file)
+$primary-color: #007bff;
+$primary-hover: #0056b3;
+$error-color: #e74c3c;
+$google-color: #db4437;
+$google-hover: #c23321;
+$text-color: #333;
+$bg-color: #ffffff;
+$font: 'Segoe UI', sans-serif;
+$shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+$radius: 12px;
 
-   .login-container {
-     display: flex;
-     flex-direction: column;
-     align-items: center;
-     justify-content: center;
-     min-height: 80vh;
-     padding: 2rem;
-     max-width: 400px;
-     margin: 0 auto;
+.login-container {
+  max-width: 400px;
+  margin: 4rem auto;
+  padding: 2rem;
+  background-color: $bg-color;
+  border-radius: $radius;
+  box-shadow: $shadow;
+  font-family: $font;
 
-     h1 {
-       font-size: 2rem;
-       margin-bottom: 1.5rem;
-     }
+  h1 {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: $text-color;
+  }
 
-     form {
-       width: 100%;
-       display: flex;
-       flex-direction: column;
-       gap: 1rem;
+  form {
+    display: flex;
+    flex-direction: column;
 
-       .form-group {
-         display: flex;
-         flex-direction: column;
+    .form-group {
+      margin-bottom: 1.5rem;
+      display: flex;
+      flex-direction: column;
 
-         label {
-           font-size: 1rem;
-           margin-bottom: 0.5rem;
-         }
+      .password-label {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: red;
+      }
 
-         input {
-           padding: 0.75rem;
-           font-size: 1rem;
-           border: 1px solid #ccc;
-           border-radius: 4px;
+      label {
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        color: darken($text-color, 10%);
+      }
 
-           &:focus {
-             outline: 2px solid #007bff;
-             outline-offset: 2px;
-           }
+      input {
+        padding: 0.75rem;
+        font-size: 1rem;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        transition: border-color 0.2s;
 
-           &[aria-invalid="true"] {
-             border-color: #dc3545;
-           }
-         }
-       }
+        &:focus {
+          border-color: $primary-color;
+          outline: none;
+        }
 
-       .error {
-         color: #dc3545;
-         font-size: 0.9rem;
-         margin-top: 0.25rem;
-       }
+        &[aria-invalid='true'] {
+          border-color: $error-color;
+          background-color: #fff8f8;
+        }
+      }
+    }
 
-       .btn {
-         padding: 0.75rem;
-         background-color: #007bff;
-         color: white;
-         border: none;
-         border-radius: 4px;
-         font-size: 1rem;
-         cursor: pointer;
-         transition: background-color 0.3s;
+    .forgot-password {
+      text-align: right;
+      margin-top: -1rem;
+      margin-bottom: 1rem;
 
-         &:hover:not(:disabled),
-         &:focus:not(:disabled) {
-           background-color: #0056b3;
-           outline: 2px solid #0056b3;
-           outline-offset: 2px;
-         }
+      a {
+        font-size: 0.9rem;
+        color: $primary-color;
+        text-decoration: none;
 
-         &:disabled {
-           background-color: #6c757d;
-           cursor: not-allowed;
-         }
-       }
-     }
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
 
-     p {
-       margin-top: 1rem;
-       font-size: 1rem;
+    .error {
+      margin-top: 0.25rem;
+      font-size: 0.875rem;
+      color: $error-color;
+    }
 
-       a {
-         color: #007bff;
-         text-decoration: none;
+    .btn {
+      padding: 0.75rem;
+      font-size: 1rem;
+      background-color: $primary-color;
+      border: none;
+      color: white;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+      margin-bottom: 1rem;
 
-         &:hover,
-         &:focus {
-           text-decoration: underline;
-           outline: 2px solid #007bff;
-           outline-offset: 2px;
-         }
-       }
-     }
+      &:hover:not(:disabled) {
+        background-color: $primary-hover;
+      }
 
-     @media (max-width: 768px) {
-       h1 {
-         font-size: 1.5rem;
-       }
+      &:disabled {
+        background-color: #cccccc;
+        cursor: not-allowed;
+      }
 
-       form .form-group input {
-         font-size: 0.9rem;
-       }
-     }
-   }
+      &.google-btn {
+        background-color: $google-color;
+
+        &:hover {
+          background-color: $google-hover;
+        }
+      }
+    }
+  }
+
+  p {
+    text-align: center;
+    font-size: 0.95rem;
+
+    a {
+      color: $primary-color;
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+// Responsive Styles
+@media (max-width: 480px) {
+  .login-container {
+    margin: 2rem 1rem;
+    padding: 1.5rem;
+
+    h1 {
+      font-size: 1.5rem;
+    }
+
+    .btn {
+      font-size: 0.95rem;
+    }
+  }
+}
