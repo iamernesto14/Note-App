@@ -4,7 +4,7 @@
        <h1>{{ note.title }}</h1>
        <p class="content">{{ note.content }}</p>
        <div class="tags">
-         <span *ngFor="let tag of note.tags" class="tag">{{ tag }}</span>
+         <span *ngFor="let tag of note.tags" class="tag"> {{ tag }}</span>
        </div>
        <div class="actions">
          <button (click)="onArchive()" class="btn" tabindex="0">Archive</button>

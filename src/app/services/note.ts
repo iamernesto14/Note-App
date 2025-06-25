@@ -5,10 +5,7 @@
      providedIn: 'root'
    })
    export class NoteService {
-     private notes: Note[] = [
-       { id: '1', title: 'First Note', content: 'This is the first note.', tags: ['work'], isArchived: false, isDeleted: false, createdAt: new Date() },
-       { id: '2', title: 'Second Note', content: 'This is the second note.', tags: ['personal'], isArchived: false, isDeleted: false, createdAt: new Date() }
-     ];
+     private notes: Note[] = [];
 
      getAll(): Note[] {
        return this.notes.filter(note => !note.isArchived && !note.isDeleted);

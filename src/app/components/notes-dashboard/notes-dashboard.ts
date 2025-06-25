@@ -1,75 +1,109 @@
-
-   import { Component, OnInit } from '@angular/core';
-   import { NoteService } from '../../services/note';
-   import { Note } from '../../models/note.interface';
-   import { Router, RouterLink } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { NoteService } from '../../services/note';
+import { Note } from '../../models/note.interface';
+import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ToasterService } from '../../services/toaster';
 import { Sidebar } from '../shared/sidebar/sidebar';
+import { NoteList } from '../note-list/note-list';
+import { NoteCreate } from '../note-create/note-create';
+import { Header } from '../shared/header/header';
 
-   @Component({
-     selector: 'app-notes-dashboard',
-     standalone: true,
-     imports: [CommonModule, RouterLink, FormsModule, Sidebar],
-     templateUrl: './notes-dashboard.html',
-     styleUrls: ['./notes-dashboard.scss']
-   })
-   export class NotesDashboard implements OnInit {
-     notes: Note[] = [];
-     filteredNotes: Note[] = [];
-     searchTerm: string = '';
-     constructor(
-       private noteService: NoteService,
-       private router: Router,
-       private toasterService: ToasterService
-     ) {}
+@Component({
+  selector: 'app-notes-dashboard',
+  standalone: true,
+  imports: [CommonModule, FormsModule, Sidebar, NoteList, Header, NoteCreate],
+  templateUrl: './notes-dashboard.html',
+  styleUrls: ['./notes-dashboard.scss']
+})
+export class NotesDashboard implements OnInit {
+  notes: Note[] = [];
+  filteredNotes: Note[] = [];
+  searchTerm: string = '';
+  selectedNote: Note | null = null;
+  showForm: boolean = false;
 
-     ngOnInit() {
-       this.notes = this.noteService.getAll();
-       this.filteredNotes = [...this.notes];
-     }
+  constructor(
+    private noteService: NoteService,
+    private router: Router,
+    private toasterService: ToasterService
+  ) {}
 
-     onSearch(event: Event) {
-       const input = (event.target as HTMLInputElement).value.toLowerCase();
-       this.searchTerm = input;
-       this.filteredNotes = this.notes.filter(note =>
-         note.title.toLowerCase().includes(input) ||
-         note.tags.some(tag => tag.toLowerCase().includes(input))
-       );
-     }
+  ngOnInit() {
+    this.notes = this.noteService.getAll();
+    this.filteredNotes = [...this.notes];
+  }
 
-     clearSearch() {
-       this.searchTerm = '';
-       this.filteredNotes = [...this.notes];
-     }
+  onSearch(searchTerm: string) {
+    this.searchTerm = searchTerm;
+    this.filteredNotes = this.notes.filter(note =>
+      note.title.toLowerCase().includes(searchTerm) ||
+      note.tags.some(tag => tag.toLowerCase().includes(searchTerm))
+    );
+  }
 
-     viewNote(id: string) {
-       this.router.navigate([`/notes/${id}`]);
-     }
+  clearSearch() {
+    this.searchTerm = '';
+    this.filteredNotes = [...this.notes];
+  }
 
-     archiveNote(id: string) {
-       this.noteService.archive(id);
-       this.notes = this.noteService.getAll();
-       this.filteredNotes = [...this.notes];
-       this.toasterService.showToast('Note archived successfully!', 'success');
-     }
+  viewNote(id: string) {
+    this.router.navigate([`/notes/${id}`]);
+  }
 
-     deleteNote(id: string) {
-       this.noteService.delete(id);
-       this.notes = this.noteService.getAll();
-       this.filteredNotes = [...this.notes];
-       this.toasterService.showToast('Note deleted successfully!', 'success');
-     }
+  navigateToSettings() {
+    this.router.navigate(['/settings']);
+  }
 
-     navigateToSettings() {
-       this.router.navigate(['/settings']);
-     }
+  filterByTag(tag: string) {
+    this.filteredNotes = this.notes.filter(note =>
+      note.tags.map(t => t.toLowerCase()).includes(tag.toLowerCase())
+    );
+  }
 
-     filterByTag(tag: string) {
-  this.filteredNotes = this.notes.filter(note =>
-    note.tags.map(t => t.toLowerCase()).includes(tag.toLowerCase())
-  );
+  selectNote(note: Note) {
+    this.selectedNote = note;
+    this.showForm = false;
+  }
+
+  showCreateForm() {
+    this.showForm = true;
+    this.selectedNote = null;
+  }
+
+  onSaveNote(note: { title: string; content: string; tags: string[] }) {
+    this.noteService.create(note);
+    this.notes = this.noteService.getAll();
+    this.filteredNotes = [...this.notes];
+    this.showForm = false;
+  }
+
+  cancelCreateForm() {
+    this.showForm = false;
+  }
+
+  archiveNote(id: string | undefined) {
+    if (id) {
+      this.noteService.archive(id);
+      this.notes = this.noteService.getAll();
+      this.filteredNotes = [...this.notes];
+      this.toasterService.showToast('Note archived successfully!', 'success');
+      if (this.selectedNote?.id === id) {
+        this.selectedNote = null;
+      }
+    }
+  }
+
+  deleteNote(id: string | undefined) {
+    if (id) {
+      this.noteService.delete(id);
+      this.notes = this.noteService.getAll();
+      this.filteredNotes = [...this.notes];
+      this.toasterService.showToast('Note deleted successfully!', 'success');
+      if (this.selectedNote?.id === id) {
+        this.selectedNote = null;
+      }
+    }
+  }
 }
-
-   }

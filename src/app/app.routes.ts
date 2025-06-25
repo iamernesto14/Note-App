@@ -16,7 +16,6 @@ import { ProfileSettings } from './components/profile-settings/profile-settings'
      { path: 'notes', component: NotesDashboard },
      { path: 'archived', component: ArchivedNotes },
      { path: 'notes/:id', component: NoteDetails },
-     { path: 'create', component: NoteCreate },
        { path: 'deleted', component: DeletedNotes },
      {path: 'settings', component: ProfileSettings},
      { path: '**', redirectTo: '', pathMatch: 'full' },

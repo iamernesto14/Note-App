@@ -1,40 +1,45 @@
-
-
-<section class="dashboard-layout">
-  <app-sidebar (tagSelected)="filterByTag($event)"></app-sidebar>
-
-     <div class="dashboard-container">
-     <div class="header">
-       <h1>Notes Dashboard</h1>
-       <a routerLink="/create" class="btn" tabindex="0">Create Note</a>
-       <button class="settings-icon" (click)="navigateToSettings()" tabindex="0" aria-label="Go to settings">
-           ⚙️
-         </button>
-     </div>
-     <div class="search-bar">
-       <input
-         type="text"
-         placeholder="Search by title or tags..."
-         [(ngModel)]="searchTerm"
-         (input)="onSearch($event)"
-         aria-label="Search notes"
-         [value]="searchTerm"
-       />
-       <button (click)="clearSearch()" class="btn btn-secondary" *ngIf="searchTerm" tabindex="0">Clear</button>
-     </div>
-     <div class="notes-grid" role="list">
-       <div *ngFor="let note of filteredNotes" class="note-card" role="listitem">
-         <h2>{{ note.title }}</h2>
-         <p>{{ note.content | slice:0:100 }}...</p>
-         <div class="actions">
-           <a (click)="viewNote(note.id)" class="btn" tabindex="0">View Details</a>
-           <button (click)="archiveNote(note.id)" class="btn" tabindex="0">Archive</button>
-           <button (click)="deleteNote(note.id)" class="btn btn-danger" tabindex="0">Delete</button>
-         </div>
-       </div>
-       <div *ngIf="filteredNotes.length === 0" class="no-notes" role="alert">
-         No notes available{{ searchTerm ? ' matching "' + searchTerm + '"' : '' }}.
-       </div>
-     </div>
+<div class="dashboard-layout">
+  <app-sidebar></app-sidebar>
+  <div class="dashboard-main">
+    <app-header
+      [searchTerm]="searchTerm"
+      (searchTermChanged)="onSearch($event)"
+      (clearSearchTriggered)="clearSearch()"
+    ></app-header>
+    <div class="panels-container">
+      <app-note-list
+        [filteredNotes]="filteredNotes"
+        [selectedNote]="selectedNote"
+        (noteSelected)="selectNote($event)"
+        (createNote)="showCreateForm()"
+      ></app-note-list>
+      <div class="note-details-panel">
+        <div *ngIf="showForm">
+          <app-note-create
+            (saveNote)="onSaveNote($event)"
+            (cancel)="cancelCreateForm()"
+          ></app-note-create>
+        </div>
+        <div *ngIf="!showForm && selectedNote; else noNote">
+          <h2>{{ selectedNote.title }}</h2>
+          <p class="note-tags">Tags: {{ selectedNote.tags.join(', ') }}</p>
+          <p class="note-date">Last edited: {{ selectedNote.createdAt | date: 'dd MMM yyyy' }}</p>
+          <p class="note-content">{{ selectedNote.content }}</p>
+        </div>
+        <ng-template #noNote>
+          <div class="no-notes">Select a note to view details.</div>
+        </ng-template>
+      </div>
+      <div class="actions-panel">
+        <div class="actions">
+          <button class="btn" (click)="archiveNote(selectedNote?.id)" [disabled]="!selectedNote || showForm">
+            <img src="assets/images/icon-archive.svg" alt="archive icon"> Archive Note
+          </button>
+          <button class="btn danger" (click)="deleteNote(selectedNote?.id)" [disabled]="!selectedNote || showForm">
+            <img src="assets/images/icon-delete.svg" alt="delete icon"> Delete Note
+          </button>
+        </div>
+      </div>
     </div>
-</section>
+  </div>
+</div>
