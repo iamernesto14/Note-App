@@ -19,7 +19,7 @@ export class NoteService {
         const parsedNotes = JSON.parse(storedNotes);
         this.notes = parsedNotes.map((note: any) => ({
           ...note,
-          createdAt: new Date(note.createdAt) // Convert string back to Date
+          createdAt: new Date(note.createdAt)
         }));
       } catch (error) {
         console.error('Error loading notes from localStorage:', error);
@@ -51,6 +51,13 @@ export class NoteService {
 
   getById(id: string): Note | undefined {
     return this.notes.find(note => note.id === id);
+  }
+
+  getUniqueTags(): string[] {
+    const allTags = this.notes
+      .filter(note => !note.isDeleted)
+      .flatMap(note => note.tags);
+    return [...new Set(allTags)].sort();
   }
 
   create(note: Omit<Note, 'id' | 'isArchived' | 'isDeleted' | 'createdAt'>): Note {

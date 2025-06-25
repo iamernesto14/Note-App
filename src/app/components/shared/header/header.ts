@@ -12,7 +12,7 @@ import { FormsModule } from '@angular/forms';
 export class Header {
   @Input() searchTerm: string = '';
   @Output() searchTermChanged = new EventEmitter<string>();
-  @Output() clearSearchTriggered = new EventEmitter<void>();
+  // @Output() clearSearchTriggered = new EventEmitter<void>();
 
   onSearch(event: Event) {
     const input = (event.target as HTMLInputElement).value.toLowerCase();
@@ -20,8 +20,8 @@ export class Header {
     this.searchTermChanged.emit(input);
   }
 
-  clearSearch() {
-    this.searchTerm = '';
-    this.clearSearchTriggered.emit();
-  }
+  // clearSearch() {
+  //   this.searchTerm = '';
+  //   this.clearSearchTriggered.emit();
+  // }
 }

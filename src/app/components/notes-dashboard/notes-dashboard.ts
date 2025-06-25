@@ -5,10 +5,10 @@ import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ToasterService } from '../../services/toaster';
-import { Sidebar } from '../shared/sidebar/sidebar';
 import { NoteList } from '../note-list/note-list';
 import { NoteCreate } from '../note-create/note-create';
 import { Header } from '../shared/header/header';
+import { Sidebar } from '../shared/sidebar/sidebar';
 
 @Component({
   selector: 'app-notes-dashboard',
@@ -24,6 +24,8 @@ export class NotesDashboard implements OnInit {
   selectedNote: Note | null = null;
   showForm: boolean = false;
   currentView: 'all' | 'archived' | null = 'all';
+  isEditMode: boolean = false;
+  tagsRefreshCounter: number = 0;
 
   constructor(
     private noteService: NoteService,
@@ -43,6 +45,13 @@ export class NotesDashboard implements OnInit {
     );
   }
 
+  editNote() {
+    if (this.selectedNote) {
+      this.showForm = true;
+      this.isEditMode = true;
+    }
+  }
+
   showAllNotes() {
     this.currentView = 'all';
     this.notes = this.noteService.getAll();
@@ -50,6 +59,7 @@ export class NotesDashboard implements OnInit {
     this.searchTerm = '';
     this.selectedNote = null;
     this.showForm = false;
+    this.isEditMode = false;
   }
 
   showArchivedNotes() {
@@ -59,6 +69,21 @@ export class NotesDashboard implements OnInit {
     this.searchTerm = '';
     this.selectedNote = null;
     this.showForm = false;
+    this.isEditMode = false;
+  }
+
+  onUpdateNote(data: { id: string; title: string; content: string; tags: string[] }) {
+    this.noteService.update(data.id, { title: data.title, content: data.content, tags: data.tags });
+    this.tagsRefreshCounter++;
+    if (this.currentView === 'all') {
+      this.showAllNotes();
+    } else if (this.currentView === 'archived') {
+      this.showArchivedNotes();
+    }
+    this.selectedNote = this.noteService.getById(data.id) || null;
+    this.showForm = false;
+    this.isEditMode = false;
+    this.toasterService.showToast('Note updated successfully!', 'success');
   }
 
   clearSearch() {
@@ -83,20 +108,24 @@ export class NotesDashboard implements OnInit {
     this.searchTerm = '';
     this.selectedNote = null;
     this.showForm = false;
+    this.isEditMode = false;
   }
 
   selectNote(note: Note) {
     this.selectedNote = note;
     this.showForm = false;
+    this.isEditMode = false; 
   }
 
   showCreateForm() {
     this.showForm = true;
     this.selectedNote = null;
+    this.isEditMode = false; 
   }
 
   onSaveNote(note: { title: string; content: string; tags: string[] }) {
     this.noteService.create(note);
+    this.tagsRefreshCounter++;
     if (this.currentView === 'all') {
       this.showAllNotes();
     } else if (this.currentView === 'archived') {
@@ -106,6 +135,7 @@ export class NotesDashboard implements OnInit {
 
   cancelCreateForm() {
     this.showForm = false;
+    this.isEditMode = false;
   }
 
   archiveNote(id: string | undefined) {
@@ -123,9 +153,25 @@ export class NotesDashboard implements OnInit {
     }
   }
 
+  restoreNote(id: string | undefined) {
+    if (id) {
+      this.noteService.unarchive(id);
+      if (this.currentView === 'all') {
+        this.showAllNotes();
+      } else if (this.currentView === 'archived') {
+        this.showArchivedNotes();
+      }
+      this.toasterService.showToast('Note restored successfully!', 'success');
+      if (this.selectedNote?.id === id && this.currentView === 'archived') {
+        this.selectedNote = null; // Clear selection since restored note is no longer in archived view
+      }
+    }
+  }
+
   deleteNote(id: string | undefined) {
     if (id) {
       this.noteService.delete(id);
+      this.tagsRefreshCounter++;
       if (this.currentView === 'all') {
         this.showAllNotes();
       } else if (this.currentView === 'archived') {

@@ -4,16 +4,15 @@
   </div>
 
   <nav class="nav-links">
-    <a (click)="onAllNotesClick()" [class.active]="activeView === 'all'">All Notes</a>
-    <a (click)="onArchivedNotesClick()" [class.active]="activeView === 'archived'">Archived Notes</a>
+    <a (click)="onAllNotesClick()" [class.active]="activeView === 'all'"><img src="assets/images/icon-home.svg" alt=""> All Notes</a>
+    <a (click)="onArchivedNotesClick()" [class.active]="activeView === 'archived'"> <img src="assets/images/icon-archive.svg" alt=""> Archived Notes</a>
   </nav>
 
-  <div class="tags-section">
+  <div class="tags-section" *ngIf="tags.length > 0">
     <h3>Tags</h3>
     <ul class="tags-list">
       <li *ngFor="let tag of tags">
-        <img src="assets/images/icon-tag.svg" alt="tag icon">
-        <button (click)="onTagClick(tag)" tabindex="0">{{ tag }}</button>
+       <img src="assets/images/icon-tag.svg" alt="tag icon"> <button (click)="onTagClick(tag)">{{ tag }}</button>
       </li>
     </ul>
   </div>

@@ -19,7 +19,11 @@
       <div class="note-details-panel">
         <div *ngIf="showForm">
           <app-note-create
+           *ngIf="showForm"
             (saveNote)="onSaveNote($event)"
+            [noteToEdit]="isEditMode ? selectedNote : null"
+             [isEditMode]="isEditMode"
+             (updateNote)="onUpdateNote($event)"
             (cancel)="cancelCreateForm()"
           ></app-note-create>
         </div>
@@ -33,11 +37,26 @@
           <div class="no-notes">Select a note to view details.</div>
         </ng-template>
       </div>
+      
+      <!-- Actions Panel -->
       <div class="actions-panel">
         <div class="actions">
-          <button class="btn" (click)="archiveNote(selectedNote?.id)" [disabled]="!selectedNote || showForm">
+          <!-- Archive Button -->
+          <button class="btn" *ngIf="selectedNote && !selectedNote.isArchived" (click)="archiveNote(selectedNote.id)" [disabled]="!selectedNote || showForm">
             <img src="assets/images/icon-archive.svg" alt="archive icon"> Archive Note
           </button>
+
+          <!-- Restore Button -->
+          <button class="btn" *ngIf="selectedNote && selectedNote.isArchived" (click)="restoreNote(selectedNote.id)">
+            <img src="assets/images/icon-restore.svg" alt="restore icon"> Restore Note
+          </button>
+
+          <!-- Edit Button -->
+          <button class="btn" (click)="editNote()">
+            Edit Note
+          </button>
+
+          <!-- Delete Button -->
           <button class="btn danger" (click)="deleteNote(selectedNote?.id)" [disabled]="!selectedNote || showForm">
             <img src="assets/images/icon-delete.svg" alt="delete icon"> Delete Note
           </button>

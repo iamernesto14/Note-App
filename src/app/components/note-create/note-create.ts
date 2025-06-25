@@ -1,9 +1,10 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NoteService } from '../../services/note';
 import { ToasterService } from '../../services/toaster';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Note } from '../../models/note.interface';
 
 @Component({
   selector: 'app-note-create',
@@ -16,7 +17,10 @@ export class NoteCreate {
   noteForm: FormGroup;
   formError: string | null = null;
   tagInput: string = '';
+  @Input() isEditMode: boolean = false;
+  @Input() noteToEdit: Note | null = null;
   @Output() saveNote = new EventEmitter<{ title: string; content: string; tags: string[] }>();
+  @Output() updateNote = new EventEmitter<{ id: string; title: string; content: string; tags: string[] }>();
   @Output() cancel = new EventEmitter<void>();
 
   constructor(
@@ -31,9 +35,20 @@ export class NoteCreate {
     });
   }
 
+  ngOnChanges() {
+    if (this.isEditMode && this.noteToEdit) {
+      this.noteForm.patchValue({
+        title: this.noteToEdit.title,
+        content: this.noteToEdit.content,
+        tags: [...this.noteToEdit.tags]
+      });
+    }
+  }
+
   addTag() {
-    if (this.tagInput.trim()) {
-      const tags = [...this.noteForm.get('tags')?.value, this.tagInput.trim()];
+    const trimmedTag = this.tagInput.trim();
+    if (trimmedTag && !this.noteForm.get('tags')?.value.includes(trimmedTag)) {
+      const tags = [...this.noteForm.get('tags')?.value, trimmedTag];
       this.noteForm.get('tags')?.setValue(tags);
       this.tagInput = '';
     }
@@ -46,16 +61,22 @@ export class NoteCreate {
 
   onSubmit() {
     if (this.noteForm.valid) {
-      const newNote = {
+      const noteData = {
         title: this.noteForm.value.title,
         content: this.noteForm.value.content,
         tags: this.noteForm.value.tags || []
       };
-      this.saveNote.emit(newNote);
+      if (this.isEditMode && this.noteToEdit) {
+        this.updateNote.emit({ id: this.noteToEdit.id, ...noteData });
+      } else {
+        this.saveNote.emit(noteData);
+      }
       this.formError = null;
       this.noteForm.reset({ tags: [] });
       this.tagInput = '';
-      this.toasterService.showToast('Note created successfully!', 'success');
+      if (!this.isEditMode) {
+        this.toasterService.showToast('Note created successfully!', 'success');
+      }
     } else {
       this.formError = 'Please fill out all required fields';
     }

@@ -1,5 +1,6 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NoteService } from '../../../services/note';
 
 @Component({
   selector: 'app-sidebar',
@@ -9,18 +10,24 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./sidebar.scss']
 })
 export class Sidebar {
-  tags: string[] = [
-    'Cooking', 'Dev', 'Fitness', 'Health',
-    'Personal', 'React', 'work', 'Shopping',
-    'Travel', 'TypeScript'
-  ];
+  tags: string[] = [];
   activeView: 'all' | 'archived' | null = 'all';
-
+  @Input() refreshTagsTrigger: number = 0;
   @Output() tagSelected = new EventEmitter<string>();
-   @Output() allNotesSelected = new EventEmitter<void>();
+  @Output() allNotesSelected = new EventEmitter<void>();
   @Output() archivedNotesSelected = new EventEmitter<void>();
 
-  constructor() {}
+  constructor(private noteService: NoteService) {
+    this.refreshTags();
+  }
+
+  ngOnChanges() {
+    this.refreshTags();
+  }
+
+  refreshTags() {
+    this.tags = this.noteService.getUniqueTags();
+  }
 
   onTagClick(tag: string) {
     this.tagSelected.emit(tag);
