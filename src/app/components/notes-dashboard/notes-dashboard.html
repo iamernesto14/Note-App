@@ -1,5 +1,5 @@
 <div class="dashboard-layout">
-  <app-sidebar (tagSelected)="filterByTag($event)"
+  <app-sidebar class="sidebar" (tagSelected)="filterByTag($event)"
     (allNotesSelected)="showAllNotes()"
     (archivedNotesSelected)="showArchivedNotes()">
   </app-sidebar>
@@ -39,7 +39,7 @@
       </div>
       
       <!-- Actions Panel -->
-      <div class="actions-panel">
+      <div class="actions-panel sidebar">
         <div class="actions">
           <!-- Archive Button -->
           <button class="btn" *ngIf="selectedNote && !selectedNote.isArchived" (click)="archiveNote(selectedNote.id)" [disabled]="!selectedNote || showForm">
@@ -64,4 +64,12 @@
       </div>
     </div>
   </div>
+
+  <app-mobile-menu
+    [refreshTagsTrigger]="tagsRefreshCounter"
+    (tagSelected)="filterByTag($event)"
+    (searchTermChanged)="onSearch($event)"
+    (allNotesSelected)="showAllNotes()"
+    (archivedNotesSelected)="showArchivedNotes()"
+  ></app-mobile-menu>
 </div>

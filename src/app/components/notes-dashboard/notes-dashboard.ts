@@ -9,11 +9,12 @@ import { NoteList } from '../note-list/note-list';
 import { NoteCreate } from '../note-create/note-create';
 import { Header } from '../shared/header/header';
 import { Sidebar } from '../shared/sidebar/sidebar';
+import { MobileMenu } from '../shared/mobile-menu/mobile-menu';
 
 @Component({
   selector: 'app-notes-dashboard',
   standalone: true,
-  imports: [CommonModule, FormsModule, Sidebar, NoteList, Header, NoteCreate],
+  imports: [CommonModule, FormsModule, Sidebar, NoteList, Header, NoteCreate, MobileMenu],
   templateUrl: './notes-dashboard.html',
   styleUrls: ['./notes-dashboard.scss']
 })

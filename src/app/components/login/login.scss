@@ -19,9 +19,12 @@ $radius: 12px;
   box-shadow: $shadow;
   font-family: $font;
 
+  .logo {
+    text-align: center;
+  }
+
   h1 {
     text-align: center;
-    margin-bottom: 2rem;
     color: $text-color;
   }
 
@@ -139,7 +142,7 @@ $radius: 12px;
     margin: 2rem 1rem;
     padding: 1.5rem;
 
-    h1 {
+    h3 {
       font-size: 1.5rem;
     }
 
