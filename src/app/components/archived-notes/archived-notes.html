@@ -1,0 +1,21 @@
+
+   <section class="archived-container">
+     <div class="header">
+       <h1>Archived Notes</h1>
+       <p>All your archived notes are stored here. You can restore or delete them anytime.</p>
+       <!-- <a routerLink="/notes" (click)="onBack()" class="btn btn-secondary" tabindex="0">Back to Dashboard</a> -->
+     </div>
+     <div class="notes-grid" role="list">
+       <div *ngFor="let note of archivedNotes" class="note-card" (click)="viewNote(note.id)" role="listitem">
+         <h2>{{ note.title }}</h2>
+         <p>{{ note.content | slice:0:100 }}...</p>
+         <p class="note-tags">{{ note.tags.join(', ') }}</p>
+         <div class="actions">
+           <button (click)="unarchiveNote(note.id)" class="btn" tabindex="0"><img src="assets/images/icon-restore.svg" alt=""></button>
+         </div>
+       </div>
+       <div *ngIf="archivedNotes.length === 0" class="no-notes" role="alert">
+         No archived notes available.
+       </div>
+     </div>
+   </section>

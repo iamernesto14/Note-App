@@ -1,0 +1,54 @@
+
+   .toast {
+     position: fixed;
+     bottom: 1rem;
+     right: 1rem;
+     padding: 0.5rem 1.5rem;
+     background-color: #333;
+     color: rgb(8, 7, 7);
+     border-radius: 4px;
+     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+     display: flex;
+     justify-content: space-between;
+     align-items: center;
+     z-index: 1000;
+     max-width: 400px;
+     font-size: 1rem;
+
+     &.success {
+       background-color: #f5f8f6;
+       border: 1px solid #252525;
+     }
+
+     &.info {
+       background-color: #17a2b8;
+     }
+
+     &.error {
+       background-color: #dc3545;
+     }
+
+     .close-btn {
+       background: none;
+       border: none;
+       color: white;
+       font-size: 1.2rem;
+       cursor: pointer;
+       padding: 0 0.5rem;
+       transition: color 0.3s;
+
+       &:hover,
+       &:focus {
+         color: #ccc;
+         outline: none;
+         cursor: pointer;
+       }
+     }
+
+     @media (max-width: 768px) {
+       bottom: 0.5rem;
+       right: 0.5rem;
+       padding: 0.75rem 1rem;
+       max-width: 90%;
+     }
+   }

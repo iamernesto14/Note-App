@@ -1,0 +1,22 @@
+<div class="notes-list-panel">
+  <div class="header">
+    <button class="btn" (click)="onCreateNote()">+ Create New Note</button>
+  </div>
+
+  <div class="note-list">
+    <div
+      *ngFor="let note of filteredNotes"
+      class="note-list-item"
+      [class.selected]="selectedNote?.id === note.id"
+      (click)="selectNote(note)"
+    >
+      <h3>{{ note.title }}</h3>
+      <p>{{ note.tags.join(', ') }}</p>
+      <p class="note-date">{{ note.createdAt | date: 'dd MMM yyyy' }}</p>
+    </div>
+
+    <div class="no-notes" *ngIf="!filteredNotes.length">
+      No notes available.
+    </div>
+  </div>
+</div>

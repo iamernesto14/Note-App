@@ -1,0 +1,15 @@
+.archived-container {
+  padding: 2rem 1rem;
+
+  .notes-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    .note-card {
+      cursor: pointer;
+      padding: 1rem;
+      border: 1px solid #ddd;
+    }
+  }
+}

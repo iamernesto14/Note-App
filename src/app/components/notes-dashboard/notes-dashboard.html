@@ -1,0 +1,76 @@
+<div class="dashboard-layout">
+  <app-sidebar class="sidebar" (tagSelected)="filterByTag($event)"
+    (allNotesSelected)="showAllNotes()"
+    (archivedNotesSelected)="showArchivedNotes()">
+  </app-sidebar>
+  <div class="dashboard-main">
+    <app-header
+      [searchTerm]="searchTerm"
+      (searchTermChanged)="onSearch($event)"
+      (clearSearchTriggered)="clearSearch()"
+    ></app-header>
+    <div class="panels-container">
+      <app-note-list
+        [filteredNotes]="filteredNotes"
+        [selectedNote]="selectedNote"
+        (navigateToNote)="navigateToNote($event)"
+        (noteSelected)="selectNote($event)"
+        (createNote)="showCreateForm()"
+      ></app-note-list>
+      <div class="note-details-panel">
+        <div *ngIf="showForm">
+          <app-note-create
+           *ngIf="showForm"
+            (saveNote)="onSaveNote($event)"
+            [noteToEdit]="isEditMode ? selectedNote : null"
+             [isEditMode]="isEditMode"
+             (updateNote)="onUpdateNote($event)"
+            (cancel)="cancelCreateForm()"
+          ></app-note-create>
+        </div>
+        <div *ngIf="!showForm && selectedNote; else noNote">
+          <h2>{{ selectedNote.title }}</h2>
+          <p class="note-tags">Tags: {{ selectedNote.tags.join(', ') }}</p>
+          <p class="note-date">Last edited: {{ selectedNote.createdAt | date: 'dd MMM yyyy' }}</p>
+          <p class="note-content">{{ selectedNote.content }}</p>
+        </div>
+        <ng-template #noNote>
+          <div class="no-notes">Select a note to view details.</div>
+        </ng-template>
+      </div>
+      
+      <!-- Actions Panel -->
+      <div class="actions-panel sidebar">
+        <div class="actions">
+          <!-- Archive Button -->
+          <button class="btn" *ngIf="selectedNote && !selectedNote.isArchived" (click)="archiveNote(selectedNote.id)" [disabled]="!selectedNote || showForm">
+            <img src="assets/images/icon-archive.svg" alt="archive icon"> Archive Note
+          </button>
+
+          <!-- Restore Button -->
+          <button class="btn" *ngIf="selectedNote && selectedNote.isArchived" (click)="restoreNote(selectedNote.id)">
+            <img src="assets/images/icon-restore.svg" alt="restore icon"> Restore Note
+          </button>
+
+          <!-- Edit Button -->
+          <button class="btn" (click)="editNote()">
+            Edit Note
+          </button>
+
+          <!-- Delete Button -->
+          <button class="btn danger" (click)="deleteNote(selectedNote?.id)" [disabled]="!selectedNote || showForm">
+            <img src="assets/images/icon-delete.svg" alt="delete icon"> Delete Note
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <app-mobile-menu
+  [refreshTagsTrigger]="tagsRefreshCounter"
+  (tagSelected)="filterByTag($event)"
+  (searchTermChanged)="onSearch($event)"
+  (allNotesSelected)="showAllNotes()"
+  (archivedNotesSelected)="showArchivedNotes()">
+</app-mobile-menu>
+</div>

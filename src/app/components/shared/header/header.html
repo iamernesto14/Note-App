@@ -1,0 +1,16 @@
+<div class="header">
+  <h1>All Notes</h1>
+  <div class="search-bar">
+    <span class="search-input">
+        <img src="assets/images/icon-search.svg" alt="search icon">
+        <input
+      type="text"
+      placeholder="Search by title, tags…"
+      [value]="searchTerm"
+      (input)="onSearch($event)"
+    />
+    </span>
+
+    <div><img src="assets/images/icon-settings.svg" alt="settings icon"></div>
+  </div>
+</div>

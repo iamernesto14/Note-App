@@ -1,0 +1,40 @@
+<div class="bottom-menu">
+  <div class="menu-items">
+    <button class="menu-btn" (click)="navigateToHome()">
+      <span><img src="assets/images/icon-home.svg" alt="home icon"></span>
+        Home
+    </button>
+    <button class="menu-btn" (click)="toggleSearch()">
+        <span><img src="assets/images/icon-search.svg" alt="search icon"></span>
+      Search
+    </button>
+    <button class="menu-btn notes-btn" (click)="navigateToNotes()">
+      <span><img src="../../../assets/images/icon-note.svg" alt="note icon"></span>
+      Notes
+    </button>
+    <button class="menu-btn" (click)="onArchivedNotesClick()">
+      <span><img src="assets/images/icon-archive.svg" alt="archieves icon"></span>
+      Archives
+    </button>
+    <button class="menu-btn" (click)="navigateToSettings()">
+        <span><img src="assets/images/icon-settings.svg" alt="settings icon"></span>
+      Settings
+    </button>
+
+  </div>
+
+  <div class="search-panel" *ngIf="showSearch">
+    <div class="search-input">
+      <input type="text" [(ngModel)]="searchTerm" (input)="onSearch($event)" placeholder="Search notes..." />
+    </div>
+  </div>
+
+  <div class="tags-panel" *ngIf="showTags">
+    <ul class="tags-list">
+      <li *ngFor="let tag of tags" (click)="onTagClick(tag)">
+        <span class="material-icons">label</span>
+        {{ tag }}
+      </li>
+    </ul>
+  </div>
+</div>
