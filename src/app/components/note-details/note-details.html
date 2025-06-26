@@ -1,17 +1,29 @@
 <div class="details-container">
-  <div *ngIf="note" class="note-card">
-    <h1>{{ note.title }}</h1>
-    <div class="content">{{ note.content }}</div>
-    <div class="tags">
-      <span *ngFor="let tag of note.tags" class="tag">{{ tag }}</span>
-    </div>
-    <div class="note-date">Created: {{ note.createdAt | date: 'dd MMM yyyy' }}</div>
-    <div class="actions">
-      <a class="btn" (click)="onArchive()" aria-label="Archive note">Archive</a>
-      <a class="btn btn-danger" (click)="onDelete()" aria-label="Delete note">Delete</a>
-      <a class="btn btn-secondary" [routerLink]="['/notes']" aria-label="Return to dashboard">Back to Dashboard</a>
+  <div class="actions">
+    <div class="action-buttons">
+      <a class="btn btn-secondary back" [routerLink]="['/notes']" aria-label="Return to dashboard"><img src="assets/images/icon-arrow-left.svg" alt=""> Go Back</a>
+      <div class="btn-group">
+        <a class="btn btn-danger" (click)="onDelete()" aria-label="Delete note"><img src="assets/images/icon-delete.svg" alt="delete icon"></a>
+        <a class="btn" (click)="onArchive()" aria-label="Archive note"><img src="assets/images/icon-archive.svg" alt="archieve icon"></a>
+      </div>
     </div>
   </div>
+  <div *ngIf="note" class="note-card">
+    <div class="note-header">
+      <h1>{{ note.title }}</h1>
+    
+      <div class="tags">
+        <span class="label"><img src="assets/images/icon-tag.svg" alt="tag icon"> Tags:</span>
+        <span *ngFor="let tag of note.tags" class="tag">{{ tag }}</span>
+      </div>
+
+      <div class="tags">
+        <span class="label"><img src="assets/images/icon-clock.svg" alt="calendar icon"> Last Edited:</span>
+        <span>{{ note.createdAt | date: 'dd MMM yyyy' }}</span>
+      </div>
+    </div>
+    <div class="content">{{ note.content }}</div>
+    
   <div *ngIf="!note" class="not-found">
     Note not found. <a [routerLink]="['/notes']" aria-label="Return to dashboard">Return to Dashboard</a>
   </div>
