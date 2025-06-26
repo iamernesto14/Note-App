@@ -1,4 +1,6 @@
 .sidebar {
+  display: flex;
+  flex-direction: column;
   width: 180px;
   background-color: #fff;
   padding: 0 0 0 0.5rem;
@@ -79,5 +81,12 @@
         }
       }
     }
+  }
+
+  .logout-section {
+    margin-top: auto; /* Push to bottom */
+    padding: 1.5rem 0;
+    border-top: 1px solid #ddd;
+    margin-right: 1rem;
   }
 }

@@ -1,0 +1,8 @@
+<button 
+  class="custom-button" 
+  [ngClass]="{'disabled': disabled, 'primary': variant === 'primary', 'danger': variant === 'danger'}" 
+  (click)="onClick()" 
+  [disabled]="disabled"
+>
+  {{ text }}
+</button>

@@ -16,4 +16,14 @@
       </li>
     </ul>
   </div>
+
+  <div class="logout-section">
+    <app-logout-button text="Log Out" variant="danger" (buttonClick)="onLogoutClick()"></app-logout-button>
+  </div>
+
+  <app-logout-modal
+    *ngIf="showLogoutModal"
+    (confirmLogout)="onConfirmLogout()"
+    (cancelLogout)="onCancelLogout()"
+  ></app-logout-modal>
 </aside>

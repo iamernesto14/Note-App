@@ -32,6 +32,7 @@ export class Login {
 
       if (email === 'test@example.com' && password === 'password') {
         this.loginError = null;
+        localStorage.setItem('isLoggedIn', 'true'); // Set auth state
         this.router.navigate(['/notes']);
         this.toasterService.showToast('Successfully logged in!', 'success');
       } else {
@@ -43,7 +44,6 @@ export class Login {
   }
 
   onGoogleLogin(): void {
-    // Simulate Google login logic (you can later replace with Firebase or OAuth logic)
     console.log('Logging in with Google...');
     this.toasterService.showToast('Google login not yet implemented.', 'info');
   }

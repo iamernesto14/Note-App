@@ -2,13 +2,13 @@
    import { Component, OnInit } from '@angular/core';
    import { NoteService } from '../../services/note';
    import { Note } from '../../models/note.interface';
-   import { Router, RouterLink } from '@angular/router';
+   import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
    @Component({
      selector: 'app-archived-notes',
      standalone: true,
-     imports: [RouterLink, CommonModule],
+     imports: [ CommonModule],
      templateUrl: './archived-notes.html',
      styleUrls: ['./archived-notes.scss']
    })
