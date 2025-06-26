@@ -13,6 +13,7 @@
       <app-note-list
         [filteredNotes]="filteredNotes"
         [selectedNote]="selectedNote"
+        (navigateToNote)="navigateToNote($event)"
         (noteSelected)="selectNote($event)"
         (createNote)="showCreateForm()"
       ></app-note-list>
@@ -66,10 +67,10 @@
   </div>
 
   <app-mobile-menu
-    [refreshTagsTrigger]="tagsRefreshCounter"
-    (tagSelected)="filterByTag($event)"
-    (searchTermChanged)="onSearch($event)"
-    (allNotesSelected)="showAllNotes()"
-    (archivedNotesSelected)="showArchivedNotes()"
-  ></app-mobile-menu>
+  [refreshTagsTrigger]="tagsRefreshCounter"
+  (tagSelected)="filterByTag($event)"
+  (searchTermChanged)="onSearch($event)"
+  (allNotesSelected)="showAllNotes()"
+  (archivedNotesSelected)="showArchivedNotes()">
+</app-mobile-menu>
 </div>

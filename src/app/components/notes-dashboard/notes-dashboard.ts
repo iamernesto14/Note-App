@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NoteService } from '../../services/note';
 import { Note } from '../../models/note.interface';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ToasterService } from '../../services/toaster';
@@ -113,9 +113,16 @@ export class NotesDashboard implements OnInit {
   }
 
   selectNote(note: Note) {
-    this.selectedNote = note;
-    this.showForm = false;
-    this.isEditMode = false; 
+    const isMobile = window.innerWidth < 1024;
+    if (!isMobile) {
+      this.selectedNote = note;
+      this.showForm = false;
+      this.isEditMode = false;
+    }
+  }
+
+  navigateToNote(id: string) {
+    this.router.navigate([`/notes/${id}`]);
   }
 
   showCreateForm() {

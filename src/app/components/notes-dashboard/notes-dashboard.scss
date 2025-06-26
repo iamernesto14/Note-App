@@ -20,6 +20,16 @@
     display: flex;
     height: calc(100% - 60px); /* Adjust for header height */
     overflow: hidden;
+
+    @media (max-width: 768px) {
+      flex-direction: column; /* Stack panels vertically on mobile */
+      height: calc(100% - 120px); /* Adjust for header and bottom menu */
+
+      .note-details-panel,
+      .actions-panel {
+        display: none; /* Hide details and actions panels in mobile view */
+      }
+    }
   }
 
   .note-details-panel {
@@ -89,8 +99,8 @@
 
   @media (max-width: 768px) {
     .panels-container {
-      flex-direction: column; /* Stack panels vertically on mobile */
-      height: calc(100% - 120px); /* Adjust for header and bottom menu */
+      flex-direction: column; 
+      height: calc(100% - 120px);
     }
 
     .note-details-panel {

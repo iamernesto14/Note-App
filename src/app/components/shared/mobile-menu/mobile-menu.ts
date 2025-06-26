@@ -84,4 +84,10 @@ export class MobileMenu {
     this.showTags = false;
     this.router.navigate(['/settings']);
   }
+
+  navigateToNotes() {
+    this.showSearch = false;
+    this.showTags = false;
+    this.router.navigate(['/notes']);
+  }
 }
