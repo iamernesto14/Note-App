@@ -132,4 +132,9 @@ export class NoteService {
     console.log('Restore failed for id:', id);
     return undefined;
   }
+
+  permanentlyDelete(id: string): void {
+    this.notes = this.notes.filter(note => note.id !== id);
+    this.saveNotes();
+  }
 }

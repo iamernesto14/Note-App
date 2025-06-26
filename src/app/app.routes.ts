@@ -8,16 +8,17 @@ import { Routes } from '@angular/router';
    import { NoteCreate } from './components/note-create/note-create';
    import { DeletedNotes } from './components/deleted-notes/deleted-notes';
 import { ProfileSettings } from './components/profile-settings/profile-settings';
+import { AuthGuard } from './guards/auth-guard';
 
-   export const routes: Routes = [
-     { path: '', component: Home },
-     { path: 'login', component: Login },
-     { path: 'signup', component: SignUp },
-     { path: 'notes', component: NotesDashboard },
-     { path: 'archived', component: ArchivedNotes },
-     { path: 'notes/:id', component: NoteDetails },
-       { path: 'deleted', component: DeletedNotes },
-     {path: 'settings', component: ProfileSettings},
-     { path: '**', redirectTo: '', pathMatch: 'full' },
-     
-   ];
+
+export const routes: Routes = [
+  { path: '', component: Home }, // Public
+  { path: 'login', component: Login }, // Public
+  { path: 'signup', component: SignUp }, // Public
+  { path: 'notes', component: NotesDashboard, canActivate: [AuthGuard] }, 
+  { path: 'archived', component: ArchivedNotes, canActivate: [AuthGuard] },
+  { path: 'notes/:id', component: NoteDetails, canActivate: [AuthGuard] }, 
+  { path: 'deleted', component: DeletedNotes, canActivate: [AuthGuard] }, 
+  { path: 'settings', component: ProfileSettings, canActivate: [AuthGuard] }, 
+  { path: '**', redirectTo: '', pathMatch: 'full' } 
+];

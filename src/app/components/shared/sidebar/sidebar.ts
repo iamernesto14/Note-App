@@ -4,11 +4,12 @@ import { NoteService } from '../../../services/note';
 import { Router } from '@angular/router';
 import { ToasterService } from '../../../services/toaster';
 import { LogoutButton } from '../logout-button/logout-button';
+import { LogoutModal } from '../logout-modal/logout-modal';
 
 @Component({
   selector: 'app-sidebar',
   standalone: true,
-  imports: [CommonModule, LogoutButton ], 
+  imports: [CommonModule, LogoutButton, LogoutModal],
   templateUrl: './sidebar.html',
   styleUrls: ['./sidebar.scss']
 })
@@ -19,6 +20,7 @@ export class Sidebar {
   @Output() tagSelected = new EventEmitter<string>();
   @Output() allNotesSelected = new EventEmitter<void>();
   @Output() archivedNotesSelected = new EventEmitter<void>();
+  showLogoutModal: boolean = false;
 
   constructor(
     private noteService: NoteService,
@@ -52,8 +54,18 @@ export class Sidebar {
   }
 
   onLogoutClick() {
-    localStorage.removeItem('notes'); // Optional: Clear notes
+    this.showLogoutModal = true;
+  }
+
+  onConfirmLogout() {
+    localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('notes');
     this.toasterService.showToast('Successfully logged out!', 'success');
     this.router.navigate(['/login']);
+    this.showLogoutModal = false;
+  }
+
+  onCancelLogout() {
+    this.showLogoutModal = false;
   }
 }
