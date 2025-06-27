@@ -1,18 +1,10 @@
-// Variables (you can move this to a separate _variables.scss file)
-$primary-color: #007bff;
-$primary-hover: #0056b3;
-$error-color: #e74c3c;
-$google-color: #db4437;
-$google-hover: #c23321;
-$text-color: #333;
-$bg-color: #ffffff;
-$font: 'Segoe UI', sans-serif;
-$shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-$radius: 12px;
+@use '../../styles/reset' as *;
+@use '../../styles/variables' as *;
+
 
 .login-container {
   max-width: 400px;
-  margin: 4rem auto;
+  margin: 1rem auto;
   padding: 2rem;
   background-color: $bg-color;
   border-radius: $radius;
@@ -21,21 +13,35 @@ $radius: 12px;
 
   .logo {
     text-align: center;
+    margin-bottom: 1rem;
   }
 
   h1 {
     text-align: center;
     color: $text-color;
+    margin-bottom: 0.8rem;
   }
 
   form {
     display: flex;
     flex-direction: column;
+    margin-top: 1rem;
 
     .form-group {
       margin-bottom: 1.5rem;
       display: flex;
       flex-direction: column;
+
+      .password-forget {
+        display: flex;
+        justify-content: space-between;
+        flex-direction: row-reverse;
+        align-items: center;
+        
+        a {
+          color: $text-color;
+        }
+      }
 
       .password-label {
         display: flex;
@@ -69,21 +75,10 @@ $radius: 12px;
       }
     }
 
-    .forgot-password {
-      text-align: right;
-      margin-top: -1rem;
-      margin-bottom: 1rem;
-
-      a {
-        font-size: 0.9rem;
-        color: $primary-color;
-        text-decoration: none;
-
-        &:hover {
-          text-decoration: underline;
-        }
-      }
+    hr {
+      margin-bottom: 0.5rem;
     }
+
 
     .error {
       margin-top: 0.25rem;
@@ -112,7 +107,15 @@ $radius: 12px;
       }
 
       &.google-btn {
-        background-color: $google-color;
+        background-color: transparent;
+        border: 1px solid #ddd;
+        color: #000;
+        font-weight: bold;
+        margin-top: 0.5rem;
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+        justify-content: center;
 
         &:hover {
           background-color: $google-hover;
@@ -132,6 +135,14 @@ $radius: 12px;
       &:hover {
         text-decoration: underline;
       }
+    }
+  }
+
+  .no-account {
+
+    a {
+      color: $text-color;
+      font-weight: bold;
     }
   }
 }

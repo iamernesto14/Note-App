@@ -9,12 +9,14 @@ import { Routes } from '@angular/router';
    import { DeletedNotes } from './components/deleted-notes/deleted-notes';
 import { ProfileSettings } from './components/profile-settings/profile-settings';
 import { AuthGuard } from './guards/auth-guard';
+import { ForgetPassword } from './components/forget-password/forget-password';
 
 
 export const routes: Routes = [
-  { path: '', component: Home }, // Public
-  { path: 'login', component: Login }, // Public
-  { path: 'signup', component: SignUp }, // Public
+  { path: '', component: Home }, 
+  { path: 'login', component: Login }, 
+  { path: 'signup', component: SignUp },
+  {path: 'forget', component: ForgetPassword },
   { path: 'notes', component: NotesDashboard, canActivate: [AuthGuard] }, 
   { path: 'archived', component: ArchivedNotes, canActivate: [AuthGuard] },
   { path: 'notes/:id', component: NoteDetails, canActivate: [AuthGuard] }, 
