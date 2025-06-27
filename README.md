@@ -1,59 +1,119 @@
-# NoteApp
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.0.0.
+# NoteApp README
 
-## Development server
+## Table of Contents
 
-To start a local development server, run:
+- [Introduction](#introduction)
+- [Getting Started](#getting-started)
+- [Project Structure](#project-structure)
+- [Features](#features)
+- [Services](#services)
+- [Components](#components)
+- [Styles](#styles)
+- [Testing](#testing)
 
-```bash
-ng serve
+## Introduction
+
+### Brief Description
+
+NoteApp is a simple note-taking application built with Angular, allowing users to create, read, update, and delete notes, as well as search and filter them.
+
+### About the Project
+
+NoteApp is an Angular application designed for note-taking and organization. The app allows users to create, read, update, and delete notes, as well as search and filter them.
+
+## Getting Started
+
+To get started with the project, follow these steps:
+
+1. Clone the repository using `git clone`.
+2. Install the dependencies using `npm install`.
+3. Start the development server using `ng serve`.
+4. Open your browser and navigate to `http://localhost:4200/`.
+
+## Project Structure
+
+The project is organized into the following folders:
+
+```
+src/
+├── app/
+│   ├── components/
+│   │   ├── header/
+│   │   ├── sidebar/
+│   │   ├── note-list/
+│   │   ├── note-create/
+│   │   ├── note-dashboard/
+│   │   ├── login/
+│   │   ├── forget-password/
+│   │   ├── profile-settings/
+│   │   ├── archived-notes/
+│   │   └── deleted-notes/
+│   ├── services/
+│   │   ├── auth-service.ts
+│   │   ├── note.service.ts
+│   │   └── toaster.service.ts
+│   ├── models/
+│   │   └── note.interface.ts
+│   ├── app.component.ts
+│   └── app.module.ts
+├── assets/
+│   ├── images/
+│   └── icons/
+├── environments/
+│   ├── environment.ts
+│   └── environment.prod.ts
+├── styles/
+│   └── styles.scss
+├── app.scss
+├── index.html
+├── main.ts
+├── polyfills.ts
+├── test.ts
+e2e/
+├── src/
+│   ├── app.e2e-spec.ts
+│   └── app.po.ts
+node_modules/
+angular.json
+package.json
+README.md
+tsconfig.json
+tsconfig.app.json
+tsconfig.spec.json
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## Features
 
-## Code scaffolding
+- User authentication (signup and login)
+- Note creation, editing, and deletion
+- Note searching and filtering
+- Simple writing environment
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## Services
 
-```bash
-ng generate component component-name
-```
+- `AuthService`: Handles user authentication and storage.
+- `NoteService`: Manages note creation, editing, and deletion.
+- `ToasterService`: Displays toast notifications.
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## Components
 
-```bash
-ng generate --help
-```
+- `HeaderComponent`: Displays the application header.
+- `SidebarComponent`: Displays the application sidebar.
+- `NoteListComponent`: Displays a list of notes.
+- `NoteCreateComponent`: Allows users to create new notes.
+- `NoteDashboardComponent`: Displays a dashboard for notes.
+- `LoginComponent`: Handles user login.
+- `ForgetPasswordComponent`: Handles password reset.
+- `ProfileSettingsComponent`: Handles user profile settings.
+- `ArchivedNotesComponent`: Displays archived notes.
+- `DeletedNotesComponent`: Displays deleted notes.
 
-## Building
 
-To build the project run:
+## Styles
 
-```bash
-ng build
-```
+The application uses SCSS for styling. Global styles are defined in `src/styles.scss`.
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+## Testing
 
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+The application uses Karma for unit testing. Test files are located in `src/app/components/`.
