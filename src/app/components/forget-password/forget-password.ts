@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, ValidatorFn, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ToasterService } from '../../services/toaster';
@@ -26,34 +26,67 @@ export class ForgetPassword {
   ) {
     this.resetForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
-      newPassword: ['', []], // No validators initially
-      confirmPassword: ['', []] // No validators initially
-    }, { validators: [] });
+      newPassword: ['', []],
+      confirmPassword: ['', []]
+    }, { validators: this.passwordMatchValidator() });
 
-    // Add validators for password fields only when email is submitted
     this.resetForm.get('email')?.valueChanges.subscribe(() => {
       if (this.emailSubmitted) {
-        this.resetForm.get('newPassword')?.setValidators([Validators.required, Validators.minLength(6)]);
+        this.resetForm.get('newPassword')?.setValidators([
+          Validators.required,
+          Validators.minLength(8),
+          this.uppercaseValidator(),
+          this.lowercaseValidator(),
+          this.numberValidator(),
+          this.specialCharValidator()
+        ]);
         this.resetForm.get('confirmPassword')?.setValidators([Validators.required]);
-        this.resetForm.setValidators(this.passwordMatchValidator.bind(this));
         this.resetForm.get('newPassword')?.updateValueAndValidity({ emitEvent: false });
         this.resetForm.get('confirmPassword')?.updateValueAndValidity({ emitEvent: false });
       } else {
         this.resetForm.get('newPassword')?.clearValidators();
         this.resetForm.get('confirmPassword')?.clearValidators();
-        this.resetForm.clearValidators();
         this.resetForm.get('newPassword')?.updateValueAndValidity({ emitEvent: false });
         this.resetForm.get('confirmPassword')?.updateValueAndValidity({ emitEvent: false });
       }
     });
   }
 
+  // Custom validator for uppercase letter
+  private uppercaseValidator(): ValidatorFn {
+    return (control: AbstractControl) => {
+      return /[A-Z]/.test(control.value) ? null : { noUppercase: true };
+    };
+  }
+
+  // Custom validator for lowercase letter
+  private lowercaseValidator(): ValidatorFn {
+    return (control: AbstractControl) => {
+      return /[a-z]/.test(control.value) ? null : { noLowercase: true };
+    };
+  }
+
+  // Custom validator for number
+  private numberValidator(): ValidatorFn {
+    return (control: AbstractControl) => {
+      return /[0-9]/.test(control.value) ? null : { noNumber: true };
+    };
+  }
+
+  // Custom validator for special character
+  private specialCharValidator(): ValidatorFn {
+    return (control: AbstractControl) => {
+      return /[!@#$%^&*(),.?":{}|<>]/.test(control.value) ? null : { noSpecialChar: true };
+    };
+  }
+
   // Custom validator for password matching
-  private passwordMatchValidator(control: import('@angular/forms').AbstractControl) {
-    const form = control as FormGroup;
-    const password = form.get('newPassword')?.value;
-    const confirmPassword = form.get('confirmPassword')?.value;
-    return password === confirmPassword ? null : { mismatch: true };
+  private passwordMatchValidator(): ValidatorFn {
+    return (form: AbstractControl) => {
+      const password = form.get('newPassword')?.value;
+      const confirmPassword = form.get('confirmPassword')?.value;
+      return password === confirmPassword ? null : { mismatch: true };
+    };
   }
 
   onSubmit(): void {
@@ -65,10 +98,16 @@ export class ForgetPassword {
         if (this.authService.emailExists(email)) {
           this.emailSubmitted = true;
           this.resetError = null;
-          // Apply password validators now
-          this.resetForm.get('newPassword')?.setValidators([Validators.required, Validators.minLength(6)]);
+          // Apply password validators
+          this.resetForm.get('newPassword')?.setValidators([
+            Validators.required,
+            Validators.minLength(8),
+            this.uppercaseValidator(),
+            this.lowercaseValidator(),
+            this.numberValidator(),
+            this.specialCharValidator()
+          ]);
           this.resetForm.get('confirmPassword')?.setValidators([Validators.required]);
-          this.resetForm.setValidators(this.passwordMatchValidator.bind(this));
           this.resetForm.get('newPassword')?.updateValueAndValidity();
           this.resetForm.get('confirmPassword')?.updateValueAndValidity();
         } else {
@@ -105,7 +144,6 @@ export class ForgetPassword {
     this.resetForm.reset();
     this.resetForm.get('newPassword')?.clearValidators();
     this.resetForm.get('confirmPassword')?.clearValidators();
-    this.resetForm.clearValidators();
     this.resetForm.get('newPassword')?.updateValueAndValidity({ emitEvent: false });
     this.resetForm.get('confirmPassword')?.updateValueAndValidity({ emitEvent: false });
   }

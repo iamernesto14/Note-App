@@ -17,7 +17,6 @@ export class AuthService {
       }
       users.push({ email, password });
       localStorage.setItem(this.STORAGE_KEY, JSON.stringify(users));
-      localStorage.setItem('isLoggedIn', 'true');
       return true;
     } catch (error) {
       console.error('Error saving user to localStorage:', error);
