@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { ToasterService } from '../../services/toaster';
+import { AuthService } from '../../services/auth-service';
 
 @Component({
   selector: 'app-login',
@@ -18,7 +19,8 @@ export class Login {
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private toasterService: ToasterService
+    private toasterService: ToasterService,
+    private authService: AuthService
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -29,12 +31,11 @@ export class Login {
   onSubmit(): void {
     if (this.loginForm.valid) {
       const { email, password } = this.loginForm.value;
-
-      if (email === 'test@example.com' && password === 'password') {
+      const loginSuccess = this.authService.login(email, password);
+      if (loginSuccess) {
         this.loginError = null;
-        localStorage.setItem('isLoggedIn', 'true'); // Set auth state
-        this.router.navigate(['/notes']);
         this.toasterService.showToast('Successfully logged in!', 'success');
+        this.router.navigate(['/notes']);
       } else {
         this.loginError = 'Invalid email or password';
       }
