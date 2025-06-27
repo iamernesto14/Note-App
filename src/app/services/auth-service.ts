@@ -41,6 +41,29 @@ export class AuthService {
     }
   }
 
+  // Reset password for a given email
+  resetPassword(email: string, newPassword: string): boolean {
+    try {
+      const users = this.getUsers();
+      const userIndex = users.findIndex(user => user.email === email);
+      if (userIndex !== -1) {
+        users[userIndex].password = newPassword;
+        localStorage.setItem(this.STORAGE_KEY, JSON.stringify(users));
+        return true;
+      }
+      return false;
+    } catch (error) {
+      console.error('Error resetting password in localStorage:', error);
+      return false;
+    }
+  }
+
+  // Check if email exists
+  emailExists(email: string): boolean {
+    const users = this.getUsers();
+    return users.some(user => user.email === email);
+  }
+
   // Retrieve users from localStorage
   private getUsers(): { email: string; password: string }[] {
     const storedUsers = localStorage.getItem(this.STORAGE_KEY);
